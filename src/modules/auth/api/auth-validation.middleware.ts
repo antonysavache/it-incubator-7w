@@ -85,7 +85,7 @@ export class AuthValidationMiddleware {
         async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
             const { email } = req.body;
 
-            const user = await this.usersQueryRepository.findByFilter({ email });
+            const user = await this.usersQueryRepository.findByFilter({ email: email.toLowerCase() });
             if (!user) {
                 return res.status(400).json({
                     errorsMessages: [{
@@ -95,17 +95,10 @@ export class AuthValidationMiddleware {
                 });
             }
 
-            const confirmation = await this.userConfirmationRepository.findByEmail(email);
-            if (!confirmation) {
-                return res.status(400).json({
-                    errorsMessages: [{
-                        message: "No pending confirmation found",
-                        field: "email"
-                    }]
-                });
-            }
+            const confirmation = await this.userConfirmationRepository.findByEmail(email.toLowerCase());
 
-            if (confirmation.isConfirmed) {
+            // Handle case where email is already confirmed
+            if (confirmation?.isConfirmed) {
                 return res.status(400).json({
                     errorsMessages: [{
                         message: "Email is already confirmed",
@@ -117,4 +110,5 @@ export class AuthValidationMiddleware {
             next();
         }
     ];
+
 }

@@ -37,7 +37,8 @@ export const confirmRegistrationUseCase = new ConfirmRegistrationUseCase(
 
 export const resendConfirmationUseCase = new ResendConfirmationUseCase(
     userConfirmationRepository,
-    emailService
+    emailService,
+    usersQueryRepository
 );
 
 // Validation Middleware
