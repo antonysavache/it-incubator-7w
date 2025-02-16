@@ -5,6 +5,7 @@ import { PostsCommandRepository } from "../../modules/posts/infrastructure/repos
 import {UsersQueryRepository} from "../../modules/users/domain/infrastructures/repositories/users-query.repository";
 import {UsersCommandRepository} from "../../modules/users/domain/infrastructures/repositories/users-command.repository";
 import {TokenCommandRepository} from "../../modules/auth/infrastructure/repositories/token-command.repository";
+import {UserConfirmationRepository} from "../../modules/auth/infrastructure/repositories/user-confirmation.repository";
 
 export const blogsQueryRepository = new BlogsQueryRepository();
 export const blogsCommandRepository = new BlogsCommandRepository();
@@ -13,3 +14,4 @@ export const postsCommandRepository = new PostsCommandRepository();
 export const usersQueryRepository = new UsersQueryRepository();
 export const usersCommandRepository = new UsersCommandRepository();
 export const tokenCommandRepository = new TokenCommandRepository();
+export const userConfirmationRepository = new UserConfirmationRepository();
