@@ -1,5 +1,3 @@
-// src/modules/auth/api/auth-validation.middleware.ts
-
 import { Request, Response, NextFunction } from 'express';
 import { body } from 'express-validator';
 import { handleValidationErrors } from '../../../shared/infrastructures/middlewares/error-handler.middleware';

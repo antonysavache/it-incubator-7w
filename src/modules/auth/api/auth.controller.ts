@@ -20,9 +20,7 @@ export class AuthController {
             return res.sendStatus(401);
         }
 
-        return res.status(200).json({
-            accessToken: result.getValue().accessToken
-        });
+        return res.status(200).json(result.getValue());
     }
 
     register = async (req: Request, res: Response) => {
@@ -30,23 +28,26 @@ export class AuthController {
 
         if (result.isFailure()) {
             const error = result.getError();
-            if (typeof error === 'string') {
-                return res.status(400).json({
-                    errorsMessages: [{ message: error, field: 'none' }]
-                });
+            if (typeof error === 'object' && 'errorsMessages' in error) {
+                return res.status(400).json(error);
             }
-            return res.status(400).json(error);
+            return res.status(400).json({
+                errorsMessages: [{ message: error as string, field: 'none' }]
+            });
         }
 
         return res.sendStatus(204);
     }
 
     confirmRegistration = async (req: Request, res: Response) => {
-        const result = await this.confirmRegistrationUseCase.execute(req.query.code as string);
+        const result = await this.confirmRegistrationUseCase.execute(req.body.code);
 
         if (result.isFailure()) {
             return res.status(400).json({
-                errorsMessages: [{ message: result.getError(), field: 'code' }]
+                errorsMessages: [{
+                    message: result.getError(),
+                    field: 'code'
+                }]
             });
         }
 
@@ -58,7 +59,10 @@ export class AuthController {
 
         if (result.isFailure()) {
             return res.status(400).json({
-                errorsMessages: [{ message: result.getError(), field: 'email' }]
+                errorsMessages: [{
+                    message: result.getError(),
+                    field: 'email'
+                }]
             });
         }
 

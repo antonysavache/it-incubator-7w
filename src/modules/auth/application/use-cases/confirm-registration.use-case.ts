@@ -1,5 +1,5 @@
-import {UserConfirmationRepository} from "../../infrastructure/repositories/user-confirmation.repository";
-import {Result} from "../../../../shared/infrastructures/result";
+import { Result } from "../../../../shared/infrastructures/result";
+import { UserConfirmationRepository } from "../../infrastructure/repositories/user-confirmation.repository";
 
 export class ConfirmRegistrationUseCase {
     constructor(
@@ -18,7 +18,7 @@ export class ConfirmRegistrationUseCase {
         }
 
         if (confirmation.expirationDate < new Date()) {
-            return Result.fail('Confirmation code expired');
+            return Result.fail('Confirmation code has expired');
         }
 
         const updated = await this.userConfirmationRepository.updateConfirmationStatus(

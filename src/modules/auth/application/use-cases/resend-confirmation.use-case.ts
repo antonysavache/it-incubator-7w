@@ -1,6 +1,8 @@
-import {UserConfirmationRepository} from "../../infrastructure/repositories/user-confirmation.repository";
-import {EmailService} from "../../infrastructure/services/email.service";
-import {Result} from "../../../../shared/infrastructures/result";
+// src/modules/auth/application/use-cases/resend-confirmation.use-case.ts
+
+import { Result } from "../../../../shared/infrastructures/result";
+import { UserConfirmationRepository } from "../../infrastructure/repositories/user-confirmation.repository";
+import { EmailService } from "../../infrastructure/services/email.service";
 import { v4 as uuidv4 } from 'uuid';
 
 export class ResendConfirmationUseCase {
@@ -21,20 +23,14 @@ export class ResendConfirmationUseCase {
         }
 
         const newCode = uuidv4();
-        const updated = await this.userConfirmationRepository.update(
-            confirmation._id.toString(),
-            {
-                ...confirmation,
-                confirmationCode: newCode,
-                expirationDate: new Date(Date.now() + 24 * 60 * 60 * 1000)
-            }
-        );
+        const updated = await this.userConfirmationRepository.updateCode(email, newCode);
 
         if (!updated) {
-            return Result.fail('Failed to update confirmation');
+            return Result.fail('Failed to update confirmation code');
         }
 
         const emailSent = await this.emailService.sendRegistrationEmail(email, newCode);
+
         if (!emailSent) {
             return Result.fail('Failed to send confirmation email');
         }
