@@ -58,9 +58,10 @@ export class AuthController {
         const result = await this.resendConfirmationUseCase.execute(req.body.email);
 
         if (result.isFailure()) {
+            const error = result.getError();
             return res.status(400).json({
                 errorsMessages: [{
-                    message: result.getError(),
+                    message: error,
                     field: 'email'
                 }]
             });
