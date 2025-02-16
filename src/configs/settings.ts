@@ -8,12 +8,12 @@ export const SETTINGS = {
 
     EMAIL: {
         SMTP: {
-            HOST: process.env.SMTP_HOST || 'smtp.gmail.com',
-            PORT: Number(process.env.SMTP_PORT) || 587,
-            SECURE: process.env.SMTP_SECURE === 'true',
-            USER: process.env.SMTP_USER || 'your-email@gmail.com',
-            PASS: process.env.SMTP_PASS || 'your-app-specific-password',
-            FROM: process.env.SMTP_FROM || '"Your App Name" <your-email@gmail.com>'
+            HOST: 'smtp.gmail.com',
+            PORT:  587,
+            SECURE: false,
+            USER: 'antonbcn1337@gmail.com',
+            PASS: 'peww qggq mvna xxlt',
+            FROM: 'antonbcn1337@gmail.com'
         }
     },
 
