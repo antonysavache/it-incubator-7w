@@ -1,3 +1,5 @@
+// src/modules/auth/api/auth-validation.middleware.ts
+
 import { Request, Response, NextFunction } from 'express';
 import { body } from 'express-validator';
 import { handleValidationErrors } from '../../../shared/infrastructures/middlewares/error-handler.middleware';
@@ -30,8 +32,8 @@ export class AuthValidationMiddleware {
         handleValidationErrors
     ];
 
-    confirmRegistration = async (req: Request, res: Response, next: NextFunction): Promise<void | Response> => {
-        const code = req.query.code as string;
+    confirmRegistration = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+        const code = req.body.code;
 
         if (!code) {
             return res.status(400).json({
@@ -82,7 +84,7 @@ export class AuthValidationMiddleware {
 
         handleValidationErrors,
 
-        async (req: Request, res: Response, next: NextFunction): Promise<void | Response> => {
+        async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
             const { email } = req.body;
 
             const user = await this.usersQueryRepository.findByFilter({ email });

@@ -1,5 +1,6 @@
 import { Router } from "express";
-import {authController, authValidationMiddleware} from "../../../configs/compositions/auth.composition";
+import { authController } from "../../../configs/compositions/auth.composition";
+import { authValidationMiddleware } from "../../../configs/compositions/auth.composition";
 
 export const authRouter = Router();
 
