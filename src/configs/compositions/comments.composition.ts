@@ -6,10 +6,7 @@ import { UpdateCommentUseCase } from "../../modules/comments/application/use-cas
 import { DeleteCommentUseCase } from "../../modules/comments/application/use-cases/delete-comment.use-case";
 import { GetCommentUseCase } from "../../modules/comments/application/use-cases/get-comment.use-case";
 import { CommentsController } from "../../modules/comments/api/comments.controller";
-import { postsQueryRepository } from "./repositories";
-
-export const commentsQueryRepository = new CommentsQueryRepository();
-export const commentsCommandRepository = new CommentsCommandRepository();
+import {commentsCommandRepository, commentsQueryRepository, postsQueryRepository} from "./repositories";
 
 export const createCommentUseCase = new CreateCommentUseCase(
     commentsCommandRepository,

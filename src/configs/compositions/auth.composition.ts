@@ -49,7 +49,6 @@ export const refreshTokenUseCase = new RefreshTokenUseCase(
 
 export const logoutUseCase = new LogoutUseCase(
     tokenCommandRepository,
-    tokenQueryRepository
 );
 
 export const getMeUseCase = new GetMeUseCase(
