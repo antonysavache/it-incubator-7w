@@ -7,12 +7,17 @@ export class TokenQueryRepository extends BaseQueryRepository<TokenDatabaseModel
     }
 
     async findValidToken(token: string, type: 'ACCESS' | 'REFRESH'): Promise<TokenDatabaseModel | null> {
-        this.checkInit();
-        return this.collection.findOne({
-            token,
-            tokenType: type,
-            isValid: true,
-            expiresAt: { $gt: new Date() }
-        });
+        try {
+            this.checkInit();
+            return await this.collection.findOne({
+                token,
+                tokenType: type,
+                isValid: true,
+                expiresAt: { $gt: new Date() }
+            });
+        } catch (error) {
+            console.error('Error in findValidToken:', error);
+            return null;
+        }
     }
 }
