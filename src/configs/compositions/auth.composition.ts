@@ -1,4 +1,3 @@
-// src/configs/compositions/auth.composition.ts
 import { LoginUseCase } from "../../modules/auth/application/use-cases/login.use-case";
 import { AuthController } from "../../modules/auth/api/auth.controller";
 import { RegisterUserUseCase } from "../../modules/auth/application/use-cases/register-user.use-case";
@@ -18,10 +17,8 @@ import {
 } from "./repositories";
 import { userSpecification } from "./users-composition";
 
-// Services
 export const emailService = new EmailService();
 
-// Use Cases
 export const loginUseCase = new LoginUseCase(
     usersQueryRepository,
     tokenCommandRepository
@@ -51,20 +48,19 @@ export const refreshTokenUseCase = new RefreshTokenUseCase(
 );
 
 export const logoutUseCase = new LogoutUseCase(
-    tokenCommandRepository
+    tokenCommandRepository,
+    tokenQueryRepository
 );
 
 export const getMeUseCase = new GetMeUseCase(
     usersQueryRepository
 );
 
-// Validation Middleware
 export const authValidationMiddleware = new AuthValidationMiddleware(
     userConfirmationRepository,
     usersQueryRepository
 );
 
-// Controller
 export const authController = new AuthController(
     loginUseCase,
     registerUserUseCase,
