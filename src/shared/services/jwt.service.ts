@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken';
-import { SETTINGS } from '../../configs/settings';
+import {SETTINGS} from "../../configs/settings";
 
 export interface JwtPayload {
     userId: string;
@@ -7,8 +7,12 @@ export interface JwtPayload {
 }
 
 export class JwtService {
-    static createJWT(userId: string, userLogin: string): string {
-        return jwt.sign({ userId, userLogin }, SETTINGS.JWT_SECRET, { expiresIn: '1h' });
+    static createJWT(userId: string, expiresIn: string): string {
+        return jwt.sign(
+            { userId },
+            SETTINGS.JWT_SECRET,
+            { expiresIn }
+        );
     }
 
     static verifyToken(token: string): JwtPayload | null {

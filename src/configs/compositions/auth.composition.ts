@@ -1,14 +1,18 @@
 // src/configs/compositions/auth.composition.ts
-
 import { LoginUseCase } from "../../modules/auth/application/use-cases/login.use-case";
 import { AuthController } from "../../modules/auth/api/auth.controller";
 import { RegisterUserUseCase } from "../../modules/auth/application/use-cases/register-user.use-case";
 import { ConfirmRegistrationUseCase } from "../../modules/auth/application/use-cases/confirm-registration.use-case";
 import { ResendConfirmationUseCase } from "../../modules/auth/application/use-cases/resend-confirmation.use-case";
+import { RefreshTokenUseCase } from "../../modules/auth/application/use-cases/refresh-token.use-case";
+import { LogoutUseCase } from "../../modules/auth/application/use-cases/logout.use-case";
+import { GetMeUseCase } from "../../modules/auth/application/use-cases/get-me.use-case";
 import { EmailService } from "../../modules/auth/infrastructure/services/email.service";
 import { AuthValidationMiddleware } from "../../modules/auth/api/auth-validation.middleware";
 import {
-    tokenCommandRepository, userConfirmationRepository,
+    tokenCommandRepository,
+    tokenQueryRepository,
+    userConfirmationRepository,
     usersCommandRepository,
     usersQueryRepository
 } from "./repositories";
@@ -41,6 +45,19 @@ export const resendConfirmationUseCase = new ResendConfirmationUseCase(
     usersQueryRepository
 );
 
+export const refreshTokenUseCase = new RefreshTokenUseCase(
+    tokenCommandRepository,
+    tokenQueryRepository
+);
+
+export const logoutUseCase = new LogoutUseCase(
+    tokenCommandRepository
+);
+
+export const getMeUseCase = new GetMeUseCase(
+    usersQueryRepository
+);
+
 // Validation Middleware
 export const authValidationMiddleware = new AuthValidationMiddleware(
     userConfirmationRepository,
@@ -52,5 +69,8 @@ export const authController = new AuthController(
     loginUseCase,
     registerUserUseCase,
     confirmRegistrationUseCase,
-    resendConfirmationUseCase
+    resendConfirmationUseCase,
+    refreshTokenUseCase,
+    logoutUseCase,
+    getMeUseCase
 );
