@@ -26,9 +26,8 @@ async function startApp() {
         tokenCommandRepository.init();
         tokenQueryRepository.init();
         userConfirmationRepository.init();
-        commentsQueryRepository.init();
         commentsCommandRepository.init();
-
+        commentsQueryRepository.init();
         app.listen(SETTINGS.PORT, () => {
             console.log(`Server started on port: ${SETTINGS.PORT}`);
         });
