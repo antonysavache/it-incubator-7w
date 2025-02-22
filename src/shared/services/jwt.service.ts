@@ -3,7 +3,6 @@ import {SETTINGS} from "../../configs/settings";
 
 export interface JwtPayload {
     userId: string;
-    userLogin: string;
 }
 
 export class JwtService {
