@@ -17,7 +17,7 @@ export class JwtService {
     static verifyToken(token: string): JwtPayload | null {
         try {
             return jwt.verify(token, SETTINGS.JWT_SECRET) as JwtPayload;
-        } catch (e) {
+        } catch (error) {
             return null;
         }
     }

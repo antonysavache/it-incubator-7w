@@ -102,39 +102,49 @@ export class AuthController {
     }
 
     refreshToken = async (req: Request, res: Response) => {
-        const refreshToken = req.cookies.refreshToken;
+        try {
+            const refreshToken = req.cookies.refreshToken;
 
-        if (!refreshToken) {
-            return res.sendStatus(401);
+            if (!refreshToken) {
+                return res.sendStatus(401);
+            }
+
+            const result = await this.refreshTokenUseCase.execute(refreshToken);
+
+            if (result.isFailure()) {
+                return res.sendStatus(401); // Always return 401 for token issues
+            }
+
+            const { accessToken, refreshToken: newRefreshToken } = result.getValue();
+
+            res.cookie('refreshToken', newRefreshToken, TOKEN_SETTINGS.REFRESH_TOKEN_COOKIE);
+            return res.status(200).json({ accessToken });
+        } catch (error) {
+            console.error('Refresh token error:', error);
+            return res.sendStatus(401); // Convert all errors to 401
         }
-
-        const result = await this.refreshTokenUseCase.execute(refreshToken);
-
-        if (result.isFailure()) {
-            return res.sendStatus(401);
-        }
-
-        const { accessToken, refreshToken: newRefreshToken } = result.getValue();
-
-        res.cookie('refreshToken', newRefreshToken, TOKEN_SETTINGS.REFRESH_TOKEN_COOKIE);
-        return res.status(200).json({ accessToken });
     }
 
     logout = async (req: Request, res: Response) => {
-        const refreshToken = req.cookies.refreshToken;
+        try {
+            const refreshToken = req.cookies.refreshToken;
 
-        if (!refreshToken) {
+            if (!refreshToken) {
+                return res.sendStatus(401);
+            }
+
+            const result = await this.logoutUseCase.execute(refreshToken);
+
+            if (result.isFailure()) {
+                return res.sendStatus(401);
+            }
+
+            res.clearCookie('refreshToken', TOKEN_SETTINGS.REFRESH_TOKEN_COOKIE);
+            return res.sendStatus(204);
+        } catch (error) {
+            console.error('Logout error:', error);
             return res.sendStatus(401);
         }
-
-        const result = await this.logoutUseCase.execute(refreshToken);
-
-        if (result.isFailure()) {
-            return res.sendStatus(401);
-        }
-
-        res.clearCookie('refreshToken');
-        return res.sendStatus(204);
     }
 
     getMe = async (req: RequestWithUser, res: Response) => {
