@@ -139,7 +139,11 @@ export class AuthController {
                 return res.sendStatus(401);
             }
 
-            res.clearCookie('refreshToken', TOKEN_SETTINGS.REFRESH_TOKEN_COOKIE);
+            res.clearCookie('refreshToken', {
+                ...TOKEN_SETTINGS.REFRESH_TOKEN_COOKIE,
+                maxAge: 0
+            });
+
             return res.sendStatus(204);
         } catch (error) {
             console.error('Logout error:', error);
